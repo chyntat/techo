@@ -1,2 +1,3 @@
+alembic==1.8.1
 fastapi==0.85.1
 SQLAlchemy==1.4.42

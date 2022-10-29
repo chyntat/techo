@@ -18,3 +18,12 @@ class UserCreate(BaseModel):
     location: str | None = None
     about_me: str | None = None
     interests: Json | None = None
+
+
+class JournalEntryCreate(BaseModel):
+    user_id: str
+    title: str
+    content: str
+    tags: Json | None = None
+    location: str | None = None
+    custom_feelings: Json | None = None

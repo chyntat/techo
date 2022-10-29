@@ -4,8 +4,8 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_url: str = 'sqlite:///./sql_app.db'  # TODO: change this appropriately
-    base_url: str = 'http://localhost:8000'
+    database_url: str = 'postgresql+asyncpg://postgres:password@0.0.0.0:5432/new_db2'  # TODO: change this appropriately
+    base_url: str = 'http://localhost:5432'
     local_env: bool = True
 
     class Config:
