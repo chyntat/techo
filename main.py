@@ -1,18 +1,25 @@
+import logging
+from app.routers import users
+from app.database.db import init_db, get_session
+from app.common.config import Settings
 from fastapi import FastAPI
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(users.router)
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.on_event("startup")
+async def startup():
+    if Settings.local_env:
+        logging.basicConfig(format='%(asctime)s, %(msecs)d %(lineno)d %(levelname)s - %(message)s',
+                            datefmt="%H:%M:%S",
+                            level=logging.DEBUG)
+    else:
+        logging.basicConfig(format='%(asctime)s, %(msecs)d %(lineno)d %(levelname)s - %(message)s',
+                            datefmt="%H:%M:%S",
+                            level=logging.WARNING)
+    await init_db()
 
 
-@app.get("/hey/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+logger = logging.getLogger(__name__)
