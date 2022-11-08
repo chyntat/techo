@@ -84,3 +84,13 @@ class JournalEntry(Base):
     is_approved = Column(Boolean, default=True)
     # ^^ if the journal entry is too profane or nsfw we might want to take an action
     user = relationship("User", lazy='joined')
+
+
+class UserJournalInteraction(Base):
+    __tablename__ = "uji"
+    journal_id = Column(String, primary_key=True, index=True)
+    user_id = Column(String, ForeignKey("users.user_id", deferrable=True, initially="DEFERRED"), index=True)
+    created_at = Column(DateTime, server_default=func.now())
+    action = Column(Text)
+    # ^^ this will be an enum: like, comment, bookmark, share, read, skip, etc.. 
+    

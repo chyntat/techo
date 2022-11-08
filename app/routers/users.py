@@ -49,3 +49,5 @@ async def get_user_journal_entries(user_id: str, session: AsyncSession = Depends
     journal_entry_objects = await session.execute(select(models.JournalEntry).filter_by(user_id=user_id))
     return journal_entry_objects.scalars().all()
 
+
+@router.post('/like_journal_entry')
