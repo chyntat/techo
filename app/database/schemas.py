@@ -27,3 +27,24 @@ class JournalEntryCreate(BaseModel):
     tags: Json | None = None
     location: str | None = None
     custom_feelings: Json | None = None
+
+
+class JournalCommentCreate(BaseModel):
+    user_id: str
+    journal_id: str
+    comment: str
+    comment_hash: str
+    media_urls: str | None = None
+    nsfw_score: float | None = None
+    profanity_words: str | None = None
+    comment_id: str | None = None
+
+
+class FollowCreate(BaseModel):
+    follower_id: str
+    following_id: str
+
+
+class JournalLikeCreate(BaseModel):
+    user_id: str
+    journal_id: str

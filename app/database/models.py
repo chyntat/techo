@@ -84,3 +84,38 @@ class JournalEntry(Base):
     is_approved = Column(Boolean, default=True)
     # ^^ if the journal entry is too profane or nsfw we might want to take an action
     user = relationship("User", lazy='joined')
+
+
+class JournalComment(Base):
+    __tablename__ = "journal_comments"
+    comment_id = Column(String, primary_key=True, index=True)
+    comment_hash = Column(String(128), index=True)  # for future, to compare hashes for analytics purposes
+    journal_id = Column(String, ForeignKey("journal_entries.journal_id", deferrable=True, initially='DEFERRED'), index=True)
+    user_id = Column(String, ForeignKey("users.user_id", deferrable=True, initially='DEFERRED'), index=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.current_timestamp())
+    content = Column(Text)
+    likes_count = Column(Integer, default=0)
+    dislikes_count = Column(Integer, default=0)
+    mentions = Column(String)  # TODO: for future ref, make sure this is correct.
+    user = relationship("User", lazy='joined')
+    journal = relationship("JournalEntry", lazy='joined')
+
+
+class Follow(Base):
+    __tablename__ = "follows"
+    follow_event_id = Column(String, primary_key=True, index=True)
+    follower_id = Column(String, ForeignKey("users.user_id", deferrable=True, initially='DEFERRED'), index=True)
+    following_id = Column(String, ForeignKey("users.user_id", deferrable=True, initially='DEFERRED'), index=True)
+    created_at = Column(DateTime, server_default=func.now())
+    status = Column(String, default="following")
+
+
+class JournalLike(Base):
+    __tablename__ = "likes"
+    like_id = Column(String, primary_key=True, index=True)
+    journal_id = Column(String, ForeignKey("journal_entries.journal_id", deferrable=True, initially='DEFERRED'), index=True)
+    user_id = Column(String, ForeignKey("users.user_id", deferrable=True, initially='DEFERRED'), index=True)
+    created_at = Column(DateTime, server_default=func.now())
+    status = Column(String, default="like")
+
