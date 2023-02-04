@@ -74,3 +74,9 @@
           ]
         }
       ```
+      
+
+
+
+#### Bugs to fix
+- check if user exists while posting a blog

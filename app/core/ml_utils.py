@@ -2,7 +2,7 @@ import openai
 
 
 def get_text_tags(text):
-    openai.api_key = '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'
+    openai.api_key = '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'
     prompt_list = [
         "What emotions are expressed in the text, give the emotions as a list : ",
         "what sentiments did the author express? give the outcome on a scale of good, neutral and bad: ",

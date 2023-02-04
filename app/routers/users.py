@@ -159,6 +159,7 @@ async def get_journal_entries_landing(user_id: str, session: AsyncSession = Depe
             'post': item.content,
             'keywords': ml_utils.get_text_tags(item.content),
             'sentiment': 'positive',
+            'date': item.updated_at.date(),
         }
         if item.updated_at.date() == datetime.datetime.now().date():
             to_return['today'] = res_fields
