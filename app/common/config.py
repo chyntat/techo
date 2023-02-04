@@ -4,7 +4,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_url: str = 'postgresql+asyncpg://postgres:postgres123@127.0.0.1:54320/techo'
+    database_url: str = 'postgresql+asyncpg://postgres:password@127.0.0.1:5432/new_db2'
     base_url: str = 'http://localhost:5432'
     local_env: bool = True
 

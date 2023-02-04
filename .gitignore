@@ -1,2 +1,7 @@
 .idea
 .idea/*
+/alembic/versions/*.py
+/alembic.ini
+/alembic/env.py
+/alembic/README
+/alembic/script.py.mako
