@@ -1,8 +1,10 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from app.common.constants import *
-engine = create_async_engine(database_url, echo=True, future=True, pool_size=25, max_overflow=25)
+from app.common.config import get_settings
+
+settings = get_settings()
+engine = create_async_engine(settings.database_url, echo=True, future=True, pool_size=25, max_overflow=25)
 
 Base = declarative_base()
 metadata = Base.metadata
