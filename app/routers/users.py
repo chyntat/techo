@@ -50,4 +50,4 @@ async def get_user_journal_entries(user_id: str, session: AsyncSession = Depends
     return journal_entry_objects.scalars().all()
 
 
-@router.post('/like_journal_entry')
+# @router.post('/like_journal_entry')

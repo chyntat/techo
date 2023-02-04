@@ -1,0 +1,1 @@
+ENV_TO_RUN='app/local.env' uvicorn app.main:app --reload
