@@ -83,7 +83,7 @@ class JournalEntry(Base):
     # ^^ this will be false if the user violates PII policy or if the user doesn't want to share the journal entry.
     is_approved = Column(Boolean, default=True)
     # ^^ if the journal entry is too profane or nsfw we might want to take an action
-    user = relationship("User", lazy='joined')
+    # user = relationship("User", lazy='joined')
 
 
 class JournalComment(Base):

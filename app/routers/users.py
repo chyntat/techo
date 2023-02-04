@@ -5,8 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.common.config import get_settings
 from app.core.language_utils import *
+import app.core.ml_utils as ml_utils
 from starlette.concurrency import run_in_threadpool
 import uuid
+import datetime
 
 settings = get_settings()
 
@@ -144,3 +146,31 @@ async def create_journal_unlike(journal_like: schemas.JournalLikeCreate, session
 async def get_journal_likes(journal_id: str, session: AsyncSession = Depends(get_session)):
     journal_like_objects = await session.execute(select(models.JournalLike).filter_by(journal_id=journal_id))
     return journal_like_objects.scalars().all()
+
+
+@router.get('/get_journal_entries_landing/{user_id}', status_code=200)
+async def get_journal_entries_landing(user_id: str, session: AsyncSession = Depends(get_session)):
+    # get the recent 3 journal entries of the user
+    response = await session.execute(select(models.JournalEntry).filter_by(user_id=user_id).limit(3))
+    response = response.scalars().all()
+    to_return = {}
+    for item in response:
+        res_fields = {
+            'post': item.content,
+            'keywords': ml_utils.get_text_tags(item.content),
+            'sentiment': 'positive',
+        }
+        if item.updated_at.date() == datetime.datetime.now().date():
+            to_return['today'] = res_fields
+        else:
+            to_return['today'] = res_fields
+        if item.updated_at.date() == datetime.datetime.now().date() - datetime.timedelta(days=1):
+            to_return['yesterday'] = res_fields
+        else:
+            to_return['yesterday'] = res_fields
+        if item.updated_at.date() == datetime.datetime.now().date() - datetime.timedelta(days=2):
+            to_return['day_before_yesterday'] = res_fields
+        else:
+            to_return['day_before_yesterday'] = res_fields
+    return to_return
+
